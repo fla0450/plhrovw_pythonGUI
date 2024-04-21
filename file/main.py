@@ -3,11 +3,13 @@ from PIL import ImageTk, Image
 import requests
 import json
 import io
-
+from dotenv import load_dotenv
+import os
 
 def get_Coordinates():
-    client_id = "91kkuktuv8"
-    client_secret = "fXUvN9IUvkZXuWI1TeKv1YKS8I3TKi9nApdn4Pog"
+    load_dotenv()
+    client_id = os.getenv("Geocoding_client_id")
+    client_secret = os.getenv("Geocoding_client_secret")
     query = "경남 양산시 중앙로 133"
     endpoint ="https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode"
     headers = {
@@ -24,8 +26,9 @@ def get_Coordinates():
     return address
 def send_api():
     # NCP 콘솔에서 복사한 클라이언트ID와 클라이언트Secret 값
-    client_id = "rim865ejp1"
-    client_secret = "raprPBPoRJjyzw8cdCKIQFOdHXeBAYipQ08fIXFF"
+    load_dotenv()
+    client_id = os.getenv('static_client_id')
+    client_secret = os.getenv("static_client_secret")
 
     # 좌표 (경도, 위도)
     endpoint = "https://naveropenapi.apigw.ntruss.com/map-static/v2/raster"
@@ -103,7 +106,7 @@ if __name__ == "__main__":
     min_label3.config(font=("Gowun Dodum",23),fg="#FFFFFF",bg="#B22B15")
 
 
-    img = ImageTk.PhotoImage(Image.open("../imges/button.png"))
+    img = ImageTk.PhotoImage(Image.open("imges\\button.png"))
     start_button = tk.Button(window,image=img,bg="#B22B15",command=StartButtonClick)
     start_button.config(highlightthickness=0,bd=0)
     start_button.config(activebackground="#B22B15")
