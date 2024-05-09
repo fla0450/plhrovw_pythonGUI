@@ -78,8 +78,7 @@ print("클릭")
 
 
 print('[데이터 수집 완료]\n소요 시간 :', time.time() - start)
-# driver.quit()  # 작업이 끝나면 창을 닫는다.
-time.sleep(5)
+driver.quit()  # 작업이 끝나면 창을 닫는다.
 
 # json 파일로 저장
 # with open('data/store_data.json', 'w', encoding='utf-8') as f:

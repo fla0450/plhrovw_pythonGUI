@@ -5,12 +5,13 @@ import json
 import io
 from dotenv import load_dotenv
 import os
+import pandas as pd
 
-def get_Coordinates():
+def get_Coordinates(name="경남 양산시 중앙로 133"):
     load_dotenv()
     client_id = os.getenv("Geocoding_client_id")
     client_secret = os.getenv("Geocoding_client_secret")
-    query = "경남 양산시 중앙로 133"
+    query = name 
     endpoint ="https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode"
     headers = {
         "X-NCP-APIGW-API-KEY-ID" : client_id,
@@ -24,7 +25,7 @@ def get_Coordinates():
     y = new_json['addresses'][0]['y']
     address =[x,y]
     return address
-def send_api():
+def send_api(n=1):
     # NCP 콘솔에서 복사한 클라이언트ID와 클라이언트Secret 값
     load_dotenv()
     client_id = os.getenv('static_client_id')
@@ -36,10 +37,15 @@ def send_api():
         "X-NCP-APIGW-API-KEY-ID": client_id,
         "X-NCP-APIGW-API-KEY": client_secret,
     }
+    lon = []
+    lat = []
     address = get_Coordinates()
+    for i in range(n):
+        address = get_Coordinates()
+        lon.append(address[0])
+        lat.append(address[1])
     # 중심 좌표
-    lon, lat = address[0], address[1]
-    _center = f"{lon},{lat}"
+    _center = f"{lon[0]},{lat[0]}"
     # 줌 레벨 - 0 ~ 20
     _level = 16
     # 가로 세로 크기 (픽셀)
@@ -51,7 +57,8 @@ def send_api():
     # 고해상도 디스펠레이 지원을 위한 옵션 - 1, 2
     _scale = 1
     # 마커
-    _markers = f"""type:d|size:mid|pos:{lon} {lat}|color:red"""
+    print(lon)
+    _markers =  f"""type:d|size:tiny|pos:{lon[0]} {lat[0]}|color:red"""
     # 라벨 언어 설정 - ko, en, ja, zh
     _lang = "ko"
     # 대중교통 정보 노출 - Boolean
@@ -82,8 +89,17 @@ def StartButtonClick():
     start_button.place(x=5000,y=5000)
     map_label.place(x=0,y=0)
     window.config(bg="#FFFFFF")
-    business_button1.place(x=700,y=100)
+    business_button1.place(x=720,y=100)
+    business_label1.place(x=830,y=120)
+    business_button2.place(x=720,y=200)
+    business_label2.place(x=830,y=220)
+    business_button3.place(x=720,y=300)
+    business_label3.place(x=830,y=320)
+def Food_list():
+    pass
+   
 if __name__ == "__main__":
+#region Method 메인 부분
     #window은 프레임
     window = tk.Tk()
     window.title("MARKETINYOU")
@@ -119,10 +135,33 @@ if __name__ == "__main__":
     map_img = send_api()
     photo_image = ImageTk.PhotoImage(map_img)
     map_label = tk.Label(window,image=photo_image)
+#endregion Methon
     #지도 버튼
-    business_button1 = tk.Button(window,image=img)
+#region Method 지도 부분
+    img2 = ImageTk.PhotoImage(Image.open("imges\\test3.png"))
+    business_button1 = tk.Button(window,image=img2)
     business_button1.config(highlightthickness=0,bd=0)
-    business_button1.config(activebackground="#FFFFFF")
     business_button1.place(x=5000,y=5000)
+    
+    business_label1 = tk.Label(window,text="음식")
+    business_label1.config(font=("Inter",20),fg="#FFFFFF",bg="#B22B15")
+    business_label1.place(x=5000,y=5000)
+    
+    business_button2 = tk.Button(window,image=img2)
+    business_button2.config(highlightthickness=0,bd=0)
+    business_button2.place(x=5000,y=5000)
+    
+    business_label2 = tk.Label(window,text="쇼핑")
+    business_label2.config(font=("Inter",20),fg="#FFFFFF",bg="#B22B15")
+    business_label2.place(x=5000,y=5000)
+    
+    business_button3 = tk.Button(window,image=img2)
+    business_button3.config(highlightthickness=0,bd=0)
+    business_button3.place(x=5000,y=5000)
+    
+    business_label3 = tk.Label(window,text ="기타")
+    business_label3.config(font=("Inter",20),fg="#FFFFFF",bg="#B22B15")
+    business_label3.place(x=5000,y=5000)
+#endregion Methon
     #실행
     window.mainloop()
