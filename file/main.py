@@ -7,6 +7,16 @@ from dotenv import load_dotenv
 import os
 import pandas as pd
 
+def Not_Need_text(text):
+    try:
+        if text in "richText":
+            return False
+        elif text in "종류":
+            return False
+        else:
+            return True
+    except:
+        return False
 def get_Coordinates(name="경남 양산시 중앙로 133"):
     load_dotenv()
     client_id = os.getenv("Geocoding_client_id")
@@ -96,7 +106,10 @@ def StartButtonClick():
     business_button3.place(x=720,y=300)
     business_label3.place(x=830,y=320)
 def Food_list():
-    pass
+    data = requests.get("http://10.150.150.50:3000/food").json()
+    for item in data:
+        if Not_Need_text(item[0]):
+            get_Coordinates(item[0])
    
 if __name__ == "__main__":
 #region Method 메인 부분
